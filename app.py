@@ -3,7 +3,7 @@ import shutil
 from flask import Flask, jsonify, request, make_response
 from flask_cors import CORS
 import nltk
-# nltk.download('punkt')
+nltk.download('punkt')
 from nltk.stem.lancaster import LancasterStemmer
 import requests
 stemmer = LancasterStemmer()
