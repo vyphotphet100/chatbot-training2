@@ -1,21 +1,24 @@
 import json
-from flask import Flask, jsonify, request
+import shutil
+from flask import Flask, jsonify, request, make_response
+from flask_cors import CORS
 import nltk
 # nltk.download('punkt')
 from nltk.stem.lancaster import LancasterStemmer
+import requests
 stemmer = LancasterStemmer()
 
 import numpy
 import tflearn
-import tensorflow
 from tensorflow.python.framework import ops
-import random
-import json
 import pickle
 import os;
 
+# jServer = "http://localhost:8080"
+jServer = "https://chatbot-vapt.herokuapp.com"
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/predict", methods=['POST'])
 def predictAPI():
@@ -25,15 +28,21 @@ def predictAPI():
     intent_result = predict(text, username)
 
     return jsonify({
-        "intent": intent_result[0],
-        "accuracy": str(intent_result[1])
+        "intentId": intent_result[0],
+        "intentName": intent_result[1],
+        "accuracy": str(intent_result[2])
     })
 
 @app.route("/train", methods=['POST'])
 def trainAPI():
     payload = json.loads(request.data)
+    userId = payload["user_id"]
     username = payload["username"]
     trainingHistoryId = payload["training_history_id"]
+
+    # Tao folder tmp 
+    if os.path.exists(username) and not os.path.exists(username + "-tmp"):
+        shutil.copytree(username, username + "-tmp")
 
     if not os.path.exists(username):
         os.makedirs(username)
@@ -102,10 +111,24 @@ def trainAPI():
     model.fit(training, output, n_epoch=1000, batch_size=8, show_metric=True)
     model.save(username + "/model.tflearn")
 
+    # Gui tin hieu train xong
+    requestBody = json.dumps({
+        'user_id': userId,
+        'training_history_id': trainingHistoryId
+    })
+
+    headers = {
+        'Content-Type': 'application/json'
+    }
+
+    requests.request("POST", jServer + "/api/training/train_done", data=requestBody, headers=headers)
+
+    if os.path.exists(username + "-tmp"):
+        shutil.rmtree(username + "-tmp")
+
     return jsonify({
         "trainingHistoryId": trainingHistoryId
     })
-
 
 def bag_of_words(s, words):
     bag = [0 for _ in range(len(words))]
@@ -117,12 +140,16 @@ def bag_of_words(s, words):
         for i, w in enumerate(words):
             if w == se:
                 bag[i] = 1
-            
+
     return numpy.array(bag)
 
 def predict(text, username):
-    # Load model 
-    with open(username + "/data.pickle", "rb") as f:
+    folderPath = username
+    if (os.path.exists(username + "-tmp")):
+        folderPath += "-tmp"
+
+    # Load model
+    with open(folderPath + "/data.pickle", "rb") as f:
         words, labels, training, output = pickle.load(f)
     ops.reset_default_graph()
     net = tflearn.input_data(shape=[None, len(training[0])])
@@ -130,15 +157,15 @@ def predict(text, username):
     net = tflearn.fully_connected(net, 8)
     net = tflearn.fully_connected(net, len(output[0]), activation="softmax")
     net = tflearn.regression(net)
-    
-    model = tflearn.DNN(net)
-    model.load(username + "/model.tflearn")
 
-    # Load words và labels 
+    model = tflearn.DNN(net)
+    model.load(folderPath + "/model.tflearn")
+
+    # Load words và labels
     words = []
     labels = []
 
-    with open(username + "/intents.json") as file:
+    with open(folderPath + "/intents.json") as file:
         data = json.load(file)
 
     for intent in data["intents"]:
@@ -147,7 +174,7 @@ def predict(text, username):
             words.extend(wrds)
 
         if intent["name"] not in labels:
-            labels.append(intent["name"])
+            labels.append(intent["name"] + "|" + intent["id"])
 
     words = [stemmer.stem(w.lower()) for w in words if w != "?"]
     words = sorted(list(set(words)))
@@ -156,10 +183,15 @@ def predict(text, username):
     # predict
     results = model.predict([bag_of_words(text, words)])
     results_index = numpy.argmax(results)
-    tag = labels[results_index]
-    return [tag, results[0][results_index]]
+    tagWithId = labels[results_index]
+    tag = tagWithId.split("|")[0]
+    intentId = tagWithId.split("|")[1]
+    return [intentId, tag, results[0][results_index]]
 
 
 @app.route("/")
 def index():
-    return "Welcome!"
+    return "Welcome to our chatbot!"
+
+if __name__ == "__main__":
+    app.run(threaded=True)
