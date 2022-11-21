@@ -1,6 +1,7 @@
 import json
 import shutil
 from flask import Flask, jsonify, request, make_response
+import threading
 from flask_cors import CORS
 import nltk
 nltk.download('punkt')
@@ -36,6 +37,16 @@ def predictAPI():
 @app.route("/train", methods=['POST'])
 def trainAPI():
     payload = json.loads(request.data)
+    trainingHistoryId = payload["training_history_id"]
+
+    t1 = threading.Thread(target=trainThread, args=(payload,))
+    t1.start()
+
+    return jsonify({
+        "trainingHistoryId": trainingHistoryId
+    })
+
+def trainThread(payload):
     userId = payload["user_id"]
     username = payload["username"]
     trainingHistoryId = payload["training_history_id"]
@@ -126,9 +137,6 @@ def trainAPI():
     if os.path.exists(username + "-tmp"):
         shutil.rmtree(username + "-tmp")
 
-    return jsonify({
-        "trainingHistoryId": trainingHistoryId
-    })
 
 def bag_of_words(s, words):
     bag = [0 for _ in range(len(words))]
