@@ -16,7 +16,7 @@ import redis
 import threading
 
 # jServer = "http://localhost:8080"
-jServer = "https://chatbot-vapt.herokuapp.com"
+# jServer = "https://chatbot-vapt.herokuapp.com"
 
 app = Flask(__name__)
 CORS(app)
