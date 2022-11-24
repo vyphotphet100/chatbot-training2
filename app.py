@@ -39,6 +39,7 @@ def trainAPI():
     payload = json.loads(request.data)
     trainingHistoryId = payload["training_history_id"]
     t1 = threading.Thread(target=trainThread, args=(payload,))
+    t1.start()
 
     return jsonify({
         "trainingHistoryId": trainingHistoryId
