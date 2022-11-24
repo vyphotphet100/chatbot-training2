@@ -13,6 +13,7 @@ from tensorflow.python.framework import ops
 import pickle
 import os
 import redis
+import threading
 
 # jServer = "http://localhost:8080"
 jServer = "https://chatbot-vapt.herokuapp.com"
@@ -36,9 +37,16 @@ def predictAPI():
 @app.route("/train", methods=['POST'])
 def trainAPI():
     payload = json.loads(request.data)
+    trainingHistoryId = payload["training_history_id"]
+    t1 = threading.Thread(target=trainThread, args=(payload,))
+
+    return jsonify({
+        "trainingHistoryId": trainingHistoryId
+    })
+
+def trainThread(payload):
     userId = payload["user_id"]
     username = payload["username"]
-    trainingHistoryId = payload["training_history_id"]
 
     # Tao folder tmp 
     if os.path.exists(username) and not os.path.exists(username + "-tmp"):
@@ -120,11 +128,6 @@ def trainAPI():
 
     if os.path.exists(username + "-tmp"):
         shutil.rmtree(username + "-tmp")
-
-    return jsonify({
-        "trainingHistoryId": trainingHistoryId
-    })
-
 
 def bag_of_words(s, words):
     bag = [0 for _ in range(len(words))]
