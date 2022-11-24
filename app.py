@@ -13,7 +13,8 @@ from tensorflow.python.framework import ops
 import pickle
 import os
 import redis
-import threading
+import multiprocessing
+import time
 
 # jServer = "http://localhost:8080"
 # jServer = "https://chatbot-vapt.herokuapp.com"
@@ -38,8 +39,9 @@ def predictAPI():
 def trainAPI():
     payload = json.loads(request.data)
     trainingHistoryId = payload["training_history_id"]
-    t1 = threading.Thread(target=trainThread, args=(payload,))
-    t1.start()
+
+    process = multiprocessing.Process(target=trainThread, args=(payload,))
+    process.start()
 
     return jsonify({
         "trainingHistoryId": trainingHistoryId
@@ -125,7 +127,7 @@ def trainThread(payload):
     host='redis-18384.c16.us-east-1-2.ec2.cloud.redislabs.com',
     port=18384,
     password='yPqm07QgkiXFbZ9gxR9ejjpmuhO3j9sG')
-    r.set("training_server_status", "free")
+    r.set(userId + ":training_server_status", "free")
 
     if os.path.exists(username + "-tmp"):
         shutil.rmtree(username + "-tmp")
