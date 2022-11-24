@@ -11,3 +11,4 @@ numpy
 tflearn
 tensorflow
 flask_cors
+redis
