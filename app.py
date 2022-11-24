@@ -1,19 +1,18 @@
 import json
 import shutil
-from flask import Flask, jsonify, request, make_response
-import threading
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import nltk
-nltk.download('punkt')
+# nltk.download('punkt')
 from nltk.stem.lancaster import LancasterStemmer
-import requests
 stemmer = LancasterStemmer()
 
 import numpy
 import tflearn
 from tensorflow.python.framework import ops
 import pickle
-import os;
+import os
+import redis
 
 # jServer = "http://localhost:8080"
 jServer = "https://chatbot-vapt.herokuapp.com"
@@ -37,16 +36,6 @@ def predictAPI():
 @app.route("/train", methods=['POST'])
 def trainAPI():
     payload = json.loads(request.data)
-    trainingHistoryId = payload["training_history_id"]
-
-    t1 = threading.Thread(target=trainThread, args=(payload,))
-    t1.start()
-
-    return jsonify({
-        "trainingHistoryId": trainingHistoryId
-    })
-
-def trainThread(payload):
     userId = payload["user_id"]
     username = payload["username"]
     trainingHistoryId = payload["training_history_id"]
@@ -123,19 +112,18 @@ def trainThread(payload):
     model.save(username + "/model.tflearn")
 
     # Gui tin hieu train xong
-    requestBody = json.dumps({
-        'user_id': userId,
-        'training_history_id': trainingHistoryId
-    })
-
-    headers = {
-        'Content-Type': 'application/json'
-    }
-
-    requests.request("POST", jServer + "/api/training/train_done", data=requestBody, headers=headers)
+    r = redis.Redis(
+    host='redis-18384.c16.us-east-1-2.ec2.cloud.redislabs.com',
+    port=18384,
+    password='yPqm07QgkiXFbZ9gxR9ejjpmuhO3j9sG')
+    r.set("training_server_status", "free")
 
     if os.path.exists(username + "-tmp"):
         shutil.rmtree(username + "-tmp")
+
+    return jsonify({
+        "trainingHistoryId": trainingHistoryId
+    })
 
 
 def bag_of_words(s, words):
