@@ -1,40 +1,14 @@
 {
     "user_id": "63775de133010e3dc28d299d",
     "username": "user1",
-    "training_history_id": "637f8a33f53e1274f3525a07",
+    "training_history_id": "6380a992d876c60f955c9aae",
     "intents": [
         {
-            "id": "637a03a154083b39bac1caad",
-            "code": "greeting",
-            "user_id": "63775de133010e3dc28d299d",
-            "name": "Greeting",
-            "patterns": [
-                {
-                    "id": "637a03a154083b39bac1caae",
-                    "content": "Hii there",
-                    "intent_id": "637a03a154083b39bac1caad",
-                    "user_id": "63775de133010e3dc28d299d"
-                },
-                {
-                    "id": "637a03a154083b39bac1caaf",
-                    "content": "Hello there",
-                    "intent_id": "637a03a154083b39bac1caad",
-                    "user_id": "63775de133010e3dc28d299d"
-                }
-            ]
-        },
-        {
             "id": "637a03a154083b39bac1cab0",
-            "code": "ask_name",
+            "code": "ask_name_2",
             "user_id": "63775de133010e3dc28d299d",
-            "name": "Ask name",
+            "name": "Ask name 2",
             "patterns": [
-                {
-                    "id": "637a03a154083b39bac1cab1",
-                    "content": "what is your name",
-                    "intent_id": "637a03a154083b39bac1cab0",
-                    "user_id": "63775de133010e3dc28d299d"
-                },
                 {
                     "id": "637a03a154083b39bac1cab2",
                     "content": "your name",
@@ -59,6 +33,38 @@
                     "id": "637a03a254083b39bac1cab5",
                     "content": "your old",
                     "intent_id": "637a03a254083b39bac1cab3",
+                    "user_id": "63775de133010e3dc28d299d"
+                }
+            ]
+        },
+        {
+            "id": "63803c04b5c521106fb3e97a",
+            "code": "chao_hoi",
+            "user_id": "63775de133010e3dc28d299d",
+            "name": "Ch\u00e0o h\u1ecfi",
+            "patterns": [
+                {
+                    "id": "63803d725ba8db1385d0445c",
+                    "content": "Xin ch\u00e0o",
+                    "intent_id": "63803c04b5c521106fb3e97a",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "63803d725ba8db1385d0445d",
+                    "content": "Ch\u00e0o b\u1ea1n nh\u00e9",
+                    "intent_id": "63803c04b5c521106fb3e97a",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "63803d725ba8db1385d0445e",
+                    "content": "Ch\u00e0o b\u1ea1n nhaaa",
+                    "intent_id": "63803c04b5c521106fb3e97a",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "63805a0b118459454664c0b1",
+                    "content": "Ch\u00e0o bu\u1ed5i s\u00e1ng",
+                    "intent_id": "63803c04b5c521106fb3e97a",
                     "user_id": "63775de133010e3dc28d299d"
                 }
             ]
