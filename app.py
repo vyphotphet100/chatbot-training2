@@ -14,6 +14,7 @@ import pickle
 import os
 import redis
 import multiprocessing
+import threading
 import time
 
 # jServer = "http://localhost:8080"
@@ -40,7 +41,7 @@ def trainAPI():
     payload = json.loads(request.data)
     trainingHistoryId = payload["training_history_id"]
 
-    process = multiprocessing.Process(target=trainThread, args=(payload,))
+    process = threading.Thread(target=trainThread, args=(payload,))
     process.start()
 
     return jsonify({
