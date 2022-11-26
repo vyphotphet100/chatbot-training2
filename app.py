@@ -13,7 +13,6 @@ from tensorflow.python.framework import ops
 import pickle
 import os
 import redis
-import multiprocessing
 import threading
 import time
 import ctypes
@@ -23,6 +22,9 @@ import ctypes
 
 app = Flask(__name__)
 CORS(app)
+threadsDic = {
+    "key": "value"
+}
 
 @app.route("/predict", methods=['POST'])
 def predictAPI():
@@ -40,12 +42,25 @@ def predictAPI():
 @app.route("/train", methods=['POST'])
 def trainAPI():
     payload = json.loads(request.data)
+    userId = payload["user_id"]
+    username = payload["username"]
     trainingHistoryId = payload["training_history_id"]
 
-    process = threading.Thread(target=trainThread, args=(payload,))
-    process.start()
-    time.sleep(3)
-    terminate_thread(process)
+    # existThread = threadsDic[userId]
+    # if (existThread != None):
+    #     terminate_thread(existThread)
+    #     if os.path.exists(username):
+    #         shutil.rmtree(username)
+
+    #         if os.path.exists(username + "-tmp"):
+    #             os.rename(username + "-tmp", username)
+
+
+    thread = threading.Thread(target=trainThread, args=(payload,))
+    thread.start()
+    # threadsDic[userId] = thread
+    time.sleep(10)
+    terminate_thread(thread)
 
     return jsonify({
         "trainingHistoryId": trainingHistoryId
