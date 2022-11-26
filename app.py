@@ -46,21 +46,19 @@ def trainAPI():
     username = payload["username"]
     trainingHistoryId = payload["training_history_id"]
 
-    # existThread = threadsDic[userId]
-    # if (existThread != None):
-    #     terminate_thread(existThread)
-    #     if os.path.exists(username):
-    #         shutil.rmtree(username)
+    existThread = threadsDic.get(userId)
+    if (existThread != None):
+        terminate_thread(existThread)
+        if os.path.exists(username):
+            shutil.rmtree(username)
 
-    #         if os.path.exists(username + "-tmp"):
-    #             os.rename(username + "-tmp", username)
+            if os.path.exists(username + "-tmp"):
+                os.rename(username + "-tmp", username)
 
 
     thread = threading.Thread(target=trainThread, args=(payload,))
     thread.start()
-    # threadsDic[userId] = thread
-    time.sleep(10)
-    terminate_thread(thread)
+    threadsDic[userId] = thread
 
     return jsonify({
         "trainingHistoryId": trainingHistoryId
@@ -147,6 +145,8 @@ def trainThread(payload):
     port=18384,
     password='yPqm07QgkiXFbZ9gxR9ejjpmuhO3j9sG')
     r.set(userId + ":training_server_status", "free")
+
+    threadsDic[userId] = None
 
     if os.path.exists(username + "-tmp"):
         shutil.rmtree(username + "-tmp")
