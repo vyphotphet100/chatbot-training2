@@ -1,70 +1,674 @@
 {
     "user_id": "63775de133010e3dc28d299d",
     "username": "user1",
-    "training_history_id": "6380a992d876c60f955c9aae",
+    "training_history_id": "638326742136854ba1d6b182",
     "intents": [
         {
-            "id": "637a03a154083b39bac1cab0",
-            "code": "ask_name_2",
+            "id": "6381e1b5f70f6a560eebb3b0",
+            "code": "xac_nhan_dung",
             "user_id": "63775de133010e3dc28d299d",
-            "name": "Ask name 2",
+            "name": "X\u00e1c nh\u1eadn \u0111\u00fang",
             "patterns": [
                 {
-                    "id": "637a03a154083b39bac1cab2",
-                    "content": "your name",
-                    "intent_id": "637a03a154083b39bac1cab0",
+                    "id": "6381e1b5f70f6a560eebb3b1",
+                    "content": "\u0111\u00fang r\u1ed3i",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b6f70f6a560eebb3b2",
+                    "content": "\u0111\u00fang r\u1ed3i nha",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b6f70f6a560eebb3b3",
+                    "content": "\u0111\u00fang nha",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b6f70f6a560eebb3b4",
+                    "content": "\u0111\u00fang nh\u00e9",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b6f70f6a560eebb3b5",
+                    "content": "\u0111\u00fang \u0111\u00fang",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b7f70f6a560eebb3b6",
+                    "content": "\u0111\u00fang r\u1ed3i \u0111\u00fang r\u1ed3i",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b7f70f6a560eebb3b7",
+                    "content": "\u1eeb \u0111\u00fang",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b7f70f6a560eebb3b8",
+                    "content": "\u1eeb \u0111\u00fang r\u1ed3i nh\u00e9",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b7f70f6a560eebb3b9",
+                    "content": "uh \u0111\u00fang nha",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b8f70f6a560eebb3ba",
+                    "content": "\u1eeb \u1eeb",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b8f70f6a560eebb3bb",
+                    "content": "\u0111\u00fang v\u1eady",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b8f70f6a560eebb3bc",
+                    "content": "\u0111\u00fang l\u00e0 nh\u01b0 th\u1ebf",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b8f70f6a560eebb3bd",
+                    "content": "ph\u1ea3i r\u1ed3i",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b9f70f6a560eebb3be",
+                    "content": "ch\u00ednh x\u00e1c lu\u00f4n",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b9f70f6a560eebb3bf",
+                    "content": "ch\u00ednh x\u00e1c",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b9f70f6a560eebb3c0",
+                    "content": "chu\u1ea9n r\u1ed3i",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b9f70f6a560eebb3c1",
+                    "content": "\u0111\u00fang l\u00e0 nh\u01b0 v\u1eady",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1b9f70f6a560eebb3c2",
+                    "content": "ch\u00ednh x\u00e1c r\u1ed3i",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1baf70f6a560eebb3c3",
+                    "content": "\u0111\u00fang v\u1eady m\u00e0",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1baf70f6a560eebb3c4",
+                    "content": "\u0111\u00fang nh\u01b0 v\u1eady \u0111\u1ea5y",
+                    "intent_id": "6381e1b5f70f6a560eebb3b0",
                     "user_id": "63775de133010e3dc28d299d"
                 }
             ]
         },
         {
-            "id": "637a03a254083b39bac1cab3",
-            "code": "ask_old",
+            "id": "6381e1baf70f6a560eebb3c5",
+            "code": "xac_nhan_sai",
             "user_id": "63775de133010e3dc28d299d",
-            "name": "Ask old",
+            "name": "X\u00e1c nh\u1eadn sai",
             "patterns": [
                 {
-                    "id": "637a03a254083b39bac1cab4",
-                    "content": "how old are you",
-                    "intent_id": "637a03a254083b39bac1cab3",
+                    "id": "6381e1bbf70f6a560eebb3c6",
+                    "content": "sai r\u1ed3i",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
                     "user_id": "63775de133010e3dc28d299d"
                 },
                 {
-                    "id": "637a03a254083b39bac1cab5",
-                    "content": "your old",
-                    "intent_id": "637a03a254083b39bac1cab3",
+                    "id": "6381e1bbf70f6a560eebb3c7",
+                    "content": "sai r\u1ed3i nha",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bbf70f6a560eebb3c8",
+                    "content": "sai nha",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bbf70f6a560eebb3c9",
+                    "content": "sai nh\u00e9",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bcf70f6a560eebb3ca",
+                    "content": "sai sai r\u1ed3i",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bcf70f6a560eebb3cb",
+                    "content": "sai r\u1ed3i sai r\u1ed3i",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bcf70f6a560eebb3cc",
+                    "content": "sai b\u00e9t r\u1ed3i",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bcf70f6a560eebb3cd",
+                    "content": "sai qu\u00e1 sai",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bdf70f6a560eebb3ce",
+                    "content": "kh\u00f4ng ph\u1ea3i nh\u01b0 v\u1eady",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bdf70f6a560eebb3cf",
+                    "content": "sai",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bdf70f6a560eebb3d0",
+                    "content": "sau h\u1ebft tr\u01a1n r\u1ed3i",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bdf70f6a560eebb3d1",
+                    "content": "sai h\u1ebft",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bef70f6a560eebb3d2",
+                    "content": "qu\u00e1 l\u00e0 sai lu\u00f4n",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bef70f6a560eebb3d3",
+                    "content": "sai qu\u00e1 \u0111i",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bef70f6a560eebb3d4",
+                    "content": "kh\u00f4ng ph\u1ea3i",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bef70f6a560eebb3d5",
+                    "content": "kh\u00f4ng \u0111\u00e2u",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bff70f6a560eebb3d6",
+                    "content": "kh\u00f4ng nha",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bff70f6a560eebb3d7",
+                    "content": "kh\u00f4ng nh\u00e9",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bff70f6a560eebb3d8",
+                    "content": "kh\u00f4ng ph\u1ea3i v\u1eady \u0111\u00e2u",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6381e1bff70f6a560eebb3d9",
+                    "content": "kh\u00f4ng \u0111\u01b0\u1ee3c nha",
+                    "intent_id": "6381e1baf70f6a560eebb3c5",
                     "user_id": "63775de133010e3dc28d299d"
                 }
             ]
         },
         {
-            "id": "63803c04b5c521106fb3e97a",
-            "code": "chao_hoi",
+            "id": "6383146122d6413a24bcbc70",
+            "code": "mua_ao_mau_trang",
             "user_id": "63775de133010e3dc28d299d",
-            "name": "Ch\u00e0o h\u1ecfi",
+            "name": "Mua \u00e1o m\u00e0u tr\u1eafng",
             "patterns": [
                 {
-                    "id": "63803d725ba8db1385d0445c",
-                    "content": "Xin ch\u00e0o",
-                    "intent_id": "63803c04b5c521106fb3e97a",
+                    "id": "6383146122d6413a24bcbc71",
+                    "content": "mua \u00e1o m\u00e0u tr\u1eafng nha",
+                    "intent_id": "6383146122d6413a24bcbc70",
                     "user_id": "63775de133010e3dc28d299d"
                 },
                 {
-                    "id": "63803d725ba8db1385d0445d",
-                    "content": "Ch\u00e0o b\u1ea1n nh\u00e9",
-                    "intent_id": "63803c04b5c521106fb3e97a",
+                    "id": "6383146222d6413a24bcbc72",
+                    "content": "t\u00f4i mua c\u00e1i \u00e1o tr\u1eafng \u1ea5y",
+                    "intent_id": "6383146122d6413a24bcbc70",
                     "user_id": "63775de133010e3dc28d299d"
                 },
                 {
-                    "id": "63803d725ba8db1385d0445e",
-                    "content": "Ch\u00e0o b\u1ea1n nhaaa",
-                    "intent_id": "63803c04b5c521106fb3e97a",
+                    "id": "6383146222d6413a24bcbc73",
+                    "content": "c\u00e1i \u00e1o m\u00e0u tr\u1eafng \u1ea5y",
+                    "intent_id": "6383146122d6413a24bcbc70",
                     "user_id": "63775de133010e3dc28d299d"
                 },
                 {
-                    "id": "63805a0b118459454664c0b1",
-                    "content": "Ch\u00e0o bu\u1ed5i s\u00e1ng",
-                    "intent_id": "63803c04b5c521106fb3e97a",
+                    "id": "6383146222d6413a24bcbc74",
+                    "content": "mua \u00e1o m\u00e0u tr\u1eafng nha",
+                    "intent_id": "6383146122d6413a24bcbc70",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146222d6413a24bcbc75",
+                    "content": "c\u00e1i \u00e1o m\u00e0u tr\u1eafng",
+                    "intent_id": "6383146122d6413a24bcbc70",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146322d6413a24bcbc76",
+                    "content": "t\u00f4i th\u00edch c\u00e1i \u00e1o m\u00e0u tr\u1eafng",
+                    "intent_id": "6383146122d6413a24bcbc70",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146322d6413a24bcbc77",
+                    "content": "\u00e1o m\u00e0u tr\u1eafng",
+                    "intent_id": "6383146122d6413a24bcbc70",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146322d6413a24bcbc78",
+                    "content": "\u00e1o m\u00e0u tr\u1eafng \u1ea5y",
+                    "intent_id": "6383146122d6413a24bcbc70",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146322d6413a24bcbc79",
+                    "content": "\u00e1o m\u00e0u tr\u1eafng nh\u00e1",
+                    "intent_id": "6383146122d6413a24bcbc70",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146322d6413a24bcbc7a",
+                    "content": "mua c\u00e1i \u00e1o m\u00e0u tr\u1eafng",
+                    "intent_id": "6383146122d6413a24bcbc70",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383265d2136854ba1d6b17f",
+                    "content": "c\u00e1i m\u00e0u tr\u1eafng nha",
+                    "intent_id": "6383146122d6413a24bcbc70",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "638326652136854ba1d6b180",
+                    "content": "m\u00e0u tr\u1eafng nha",
+                    "intent_id": "6383146122d6413a24bcbc70",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383266c2136854ba1d6b181",
+                    "content": "m\u00e0u tr\u1eafng nh\u00e9",
+                    "intent_id": "6383146122d6413a24bcbc70",
+                    "user_id": "63775de133010e3dc28d299d"
+                }
+            ]
+        },
+        {
+            "id": "6383146422d6413a24bcbc7b",
+            "code": "mua_ao_mau_den",
+            "user_id": "63775de133010e3dc28d299d",
+            "name": "Mua \u00e1o m\u00e0u \u0111en",
+            "patterns": [
+                {
+                    "id": "6383146422d6413a24bcbc7c",
+                    "content": "mua \u00e1o m\u00e0u \u0111en nha",
+                    "intent_id": "6383146422d6413a24bcbc7b",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146422d6413a24bcbc7d",
+                    "content": "t\u00f4i mua c\u00e1i \u00e1o \u0111en \u1ea5y",
+                    "intent_id": "6383146422d6413a24bcbc7b",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146522d6413a24bcbc7e",
+                    "content": "c\u00e1i \u00e1o m\u00e0u \u0111en \u1ea5y",
+                    "intent_id": "6383146422d6413a24bcbc7b",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146522d6413a24bcbc7f",
+                    "content": "mua \u00e1o m\u00e0u \u0111en nha",
+                    "intent_id": "6383146422d6413a24bcbc7b",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146522d6413a24bcbc80",
+                    "content": "c\u00e1i \u00e1o m\u00e0u \u0111en",
+                    "intent_id": "6383146422d6413a24bcbc7b",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146522d6413a24bcbc81",
+                    "content": "t\u00f4i th\u00edch c\u00e1i \u00e1o m\u00e0u \u0111en",
+                    "intent_id": "6383146422d6413a24bcbc7b",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146522d6413a24bcbc82",
+                    "content": "\u00e1o m\u00e0u \u0111en",
+                    "intent_id": "6383146422d6413a24bcbc7b",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146622d6413a24bcbc83",
+                    "content": "\u00e1o m\u00e0u \u0111en \u1ea5y",
+                    "intent_id": "6383146422d6413a24bcbc7b",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146622d6413a24bcbc84",
+                    "content": "\u00e1o m\u00e0u \u0111en nh\u00e1",
+                    "intent_id": "6383146422d6413a24bcbc7b",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146622d6413a24bcbc85",
+                    "content": "mua c\u00e1i \u00e1o m\u00e0u \u0111en",
+                    "intent_id": "6383146422d6413a24bcbc7b",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383262f2136854ba1d6b17b",
+                    "content": "m\u00e0u \u0111en nh\u00e9",
+                    "intent_id": "6383146422d6413a24bcbc7b",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "638326342136854ba1d6b17c",
+                    "content": "m\u00e0u \u0111en nha",
+                    "intent_id": "6383146422d6413a24bcbc7b",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383263e2136854ba1d6b17d",
+                    "content": "c\u00e1i m\u00e0u \u0111en nha",
+                    "intent_id": "6383146422d6413a24bcbc7b",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "638326412136854ba1d6b17e",
+                    "content": "c\u00e1i m\u00e0u \u0111en nha",
+                    "intent_id": "6383146422d6413a24bcbc7b",
+                    "user_id": "63775de133010e3dc28d299d"
+                }
+            ]
+        },
+        {
+            "id": "6383146622d6413a24bcbc86",
+            "code": "mua_ao_mau_vang",
+            "user_id": "63775de133010e3dc28d299d",
+            "name": "Mua \u00e1o m\u00e0u v\u00e0ng",
+            "patterns": [
+                {
+                    "id": "6383146722d6413a24bcbc87",
+                    "content": "mua \u00e1o m\u00e0u v\u00e0ng nha",
+                    "intent_id": "6383146622d6413a24bcbc86",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146722d6413a24bcbc88",
+                    "content": "t\u00f4i mua c\u00e1i \u00e1o v\u00e0ng \u1ea5y",
+                    "intent_id": "6383146622d6413a24bcbc86",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146722d6413a24bcbc89",
+                    "content": "c\u00e1i \u00e1o m\u00e0u v\u00e0ng \u1ea5y",
+                    "intent_id": "6383146622d6413a24bcbc86",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146722d6413a24bcbc8a",
+                    "content": "mua \u00e1o m\u00e0u v\u00e0ng nha",
+                    "intent_id": "6383146622d6413a24bcbc86",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146822d6413a24bcbc8b",
+                    "content": "c\u00e1i \u00e1o m\u00e0u v\u00e0ng",
+                    "intent_id": "6383146622d6413a24bcbc86",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146822d6413a24bcbc8c",
+                    "content": "t\u00f4i th\u00edch c\u00e1i \u00e1o m\u00e0u v\u00e0ng",
+                    "intent_id": "6383146622d6413a24bcbc86",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146822d6413a24bcbc8d",
+                    "content": "\u00e1o m\u00e0u v\u00e0ng",
+                    "intent_id": "6383146622d6413a24bcbc86",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146822d6413a24bcbc8e",
+                    "content": "\u00e1o m\u00e0u v\u00e0ng \u1ea5y",
+                    "intent_id": "6383146622d6413a24bcbc86",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146822d6413a24bcbc8f",
+                    "content": "\u00e1o m\u00e0u v\u00e0ng nh\u00e1",
+                    "intent_id": "6383146622d6413a24bcbc86",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146922d6413a24bcbc90",
+                    "content": "mua c\u00e1i \u00e1o m\u00e0u v\u00e0ng",
+                    "intent_id": "6383146622d6413a24bcbc86",
+                    "user_id": "63775de133010e3dc28d299d"
+                }
+            ]
+        },
+        {
+            "id": "6383146922d6413a24bcbc91",
+            "code": "noi_gia_120_nghin",
+            "user_id": "63775de133010e3dc28d299d",
+            "name": "N\u00f3i gi\u00e1 120 ngh\u00ecn",
+            "patterns": [
+                {
+                    "id": "6383146922d6413a24bcbc92",
+                    "content": "120 ngh\u00ecn",
+                    "intent_id": "6383146922d6413a24bcbc91",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146922d6413a24bcbc93",
+                    "content": "120 ng\u00e0n",
+                    "intent_id": "6383146922d6413a24bcbc91",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146a22d6413a24bcbc94",
+                    "content": "120k",
+                    "intent_id": "6383146922d6413a24bcbc91",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146a22d6413a24bcbc95",
+                    "content": "120000",
+                    "intent_id": "6383146922d6413a24bcbc91",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146a22d6413a24bcbc96",
+                    "content": "120k nha",
+                    "intent_id": "6383146922d6413a24bcbc91",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146a22d6413a24bcbc97",
+                    "content": "c\u00e1i 120k \u1ea5y",
+                    "intent_id": "6383146922d6413a24bcbc91",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146b22d6413a24bcbc98",
+                    "content": "c\u00e1i 120 ngh\u00ecn nha",
+                    "intent_id": "6383146922d6413a24bcbc91",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146b22d6413a24bcbc99",
+                    "content": "120k \u1ea5y",
+                    "intent_id": "6383146922d6413a24bcbc91",
+                    "user_id": "63775de133010e3dc28d299d"
+                }
+            ]
+        },
+        {
+            "id": "6383146b22d6413a24bcbc9a",
+            "code": "noi_gia_150_nghin",
+            "user_id": "63775de133010e3dc28d299d",
+            "name": "N\u00f3i gi\u00e1 150 ngh\u00ecn",
+            "patterns": [
+                {
+                    "id": "6383146b22d6413a24bcbc9b",
+                    "content": "150 ngh\u00ecn",
+                    "intent_id": "6383146b22d6413a24bcbc9a",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146c22d6413a24bcbc9c",
+                    "content": "150 ng\u00e0n",
+                    "intent_id": "6383146b22d6413a24bcbc9a",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146c22d6413a24bcbc9d",
+                    "content": "150k",
+                    "intent_id": "6383146b22d6413a24bcbc9a",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146c22d6413a24bcbc9e",
+                    "content": "150000",
+                    "intent_id": "6383146b22d6413a24bcbc9a",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146c22d6413a24bcbc9f",
+                    "content": "150k nha",
+                    "intent_id": "6383146b22d6413a24bcbc9a",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146d22d6413a24bcbca0",
+                    "content": "c\u00e1i 150k \u1ea5y",
+                    "intent_id": "6383146b22d6413a24bcbc9a",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146d22d6413a24bcbca1",
+                    "content": "c\u00e1i 150 ngh\u00ecn nha",
+                    "intent_id": "6383146b22d6413a24bcbc9a",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146d22d6413a24bcbca2",
+                    "content": "150k \u1ea5y",
+                    "intent_id": "6383146b22d6413a24bcbc9a",
+                    "user_id": "63775de133010e3dc28d299d"
+                }
+            ]
+        },
+        {
+            "id": "6383146d22d6413a24bcbca3",
+            "code": "noi_gia_200_nghin",
+            "user_id": "63775de133010e3dc28d299d",
+            "name": "N\u00f3i gi\u00e1 200 ngh\u00ecn",
+            "patterns": [
+                {
+                    "id": "6383146e22d6413a24bcbca4",
+                    "content": "200 ngh\u00ecn",
+                    "intent_id": "6383146d22d6413a24bcbca3",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146e22d6413a24bcbca5",
+                    "content": "200 ng\u00e0n",
+                    "intent_id": "6383146d22d6413a24bcbca3",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146e22d6413a24bcbca6",
+                    "content": "200k",
+                    "intent_id": "6383146d22d6413a24bcbca3",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146e22d6413a24bcbca7",
+                    "content": "200000",
+                    "intent_id": "6383146d22d6413a24bcbca3",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146f22d6413a24bcbca8",
+                    "content": "200k nha",
+                    "intent_id": "6383146d22d6413a24bcbca3",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146f22d6413a24bcbca9",
+                    "content": "c\u00e1i 200k \u1ea5y",
+                    "intent_id": "6383146d22d6413a24bcbca3",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146f22d6413a24bcbcaa",
+                    "content": "c\u00e1i 200 ngh\u00ecn nha",
+                    "intent_id": "6383146d22d6413a24bcbca3",
+                    "user_id": "63775de133010e3dc28d299d"
+                },
+                {
+                    "id": "6383146f22d6413a24bcbcab",
+                    "content": "200k \u1ea5y",
+                    "intent_id": "6383146d22d6413a24bcbca3",
                     "user_id": "63775de133010e3dc28d299d"
                 }
             ]
