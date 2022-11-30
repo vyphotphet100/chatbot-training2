@@ -31,7 +31,8 @@ def predictAPI():
     payload = json.loads(request.data)
     text = payload["text"]
     username = payload["username"]
-    intent_result = predict(text, username)
+    intentIds = payload["intent_ids"]
+    intent_result = predict(text, username, intentIds)
 
     return jsonify({
         "intentId": intent_result[0],
@@ -164,7 +165,7 @@ def bag_of_words(s, words):
 
     return numpy.array(bag)
 
-def predict(text, username):
+def predict(text, username, intentIds):
     folderPath = username
     if (os.path.exists(username + "-tmp")):
         folderPath += "-tmp"
@@ -204,7 +205,26 @@ def predict(text, username):
     # predict
     results = model.predict([bag_of_words(text, words)])
     results_index = numpy.argmax(results)
-    tagWithId = labels[results_index]
+    maxAccuracy = 0
+    resultIdx = -1
+    for result in results:
+        for i in range(0, len(result)):
+            tagWithId = labels[i]
+            tag = tagWithId.split("|")[0]
+            intentId = tagWithId.split("|")[1]
+            
+            if (intentId not in intentIds):
+                continue
+
+            if (result[i] > maxAccuracy and result[i] > 0.5):
+                maxAccuracy = result[i]
+                resultIdx = i
+
+
+    if (resultIdx == -1):
+        return [None, None, 0]
+
+    tagWithId = labels[resultIdx]
     tag = tagWithId.split("|")[0]
     intentId = tagWithId.split("|")[1]
     return [intentId, tag, results[0][results_index]]
