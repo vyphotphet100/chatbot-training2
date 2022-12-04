@@ -1,3 +1,4 @@
+# coding: utf-8
 import json
 import shutil
 from flask import Flask, jsonify, request
@@ -20,7 +21,6 @@ import base64
 
 # jServer = "http://localhost:8080"
 # jServer = "https://chatbot-vapt.herokuapp.com"
-# coding: utf-8
 
 app = Flask(__name__)
 CORS(app)
