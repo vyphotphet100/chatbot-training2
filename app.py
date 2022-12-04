@@ -16,6 +16,7 @@ import redis
 import threading
 import time
 import ctypes
+import base64
 
 # jServer = "http://localhost:8080"
 # jServer = "https://chatbot-vapt.herokuapp.com"
@@ -26,13 +27,20 @@ threadsDic = {
     "key": "value"
 }
 
+# redis
+r = redis.Redis(
+host='redis-18384.c16.us-east-1-2.ec2.cloud.redislabs.com',
+port=18384,
+password='yPqm07QgkiXFbZ9gxR9ejjpmuhO3j9sG')
+
 @app.route("/predict", methods=['POST'])
 def predictAPI():
     payload = json.loads(request.data)
     text = payload["text"]
     username = payload["username"]
+    userId = payload["user_id"]
     intentIds = payload["intent_ids"]
-    intent_result = predict(text, username, intentIds)
+    intent_result = predict(text, username, userId, intentIds)
 
     return jsonify({
         "intentId": intent_result[0],
@@ -50,12 +58,6 @@ def trainAPI():
     existThread = threadsDic.get(userId)
     if (existThread != None):
         terminate_thread(existThread)
-        if os.path.exists(username):
-            shutil.rmtree(username)
-
-            if os.path.exists(username + "-tmp"):
-                os.rename(username + "-tmp", username)
-
 
     thread = threading.Thread(target=trainThread, args=(payload,))
     thread.start()
@@ -68,10 +70,6 @@ def trainAPI():
 def trainThread(payload):
     userId = payload["user_id"]
     username = payload["username"]
-
-    # Tao folder tmp 
-    if os.path.exists(username) and not os.path.exists(username + "-tmp"):
-        shutil.copytree(username, username + "-tmp")
 
     if not os.path.exists(username):
         os.makedirs(username)
@@ -141,16 +139,35 @@ def trainThread(payload):
     model.save(username + "/model.tflearn")
 
     # Gui tin hieu train xong
-    r = redis.Redis(
-    host='redis-18384.c16.us-east-1-2.ec2.cloud.redislabs.com',
-    port=18384,
-    password='yPqm07QgkiXFbZ9gxR9ejjpmuhO3j9sG')
     r.set(userId + ":training_server_status", "free")
-
     threadsDic[userId] = None
 
-    if os.path.exists(username + "-tmp"):
-        shutil.rmtree(username + "-tmp")
+    # set hết model lên redis -> Xóa folder {username}
+    with open(username + "/checkpoint", "rb") as file:
+        base64_checkpoint = base64.b64encode(file.read())
+        r.set(userId + ":model:checkpoint", base64_checkpoint)
+
+    with open(username + "/data.pickle", "rb") as file:
+        base64_data_pickle = base64.b64encode(file.read())
+        r.set(userId + ":model:data.pickle", base64_data_pickle)
+
+    with open(username + "/intents.json", "rb") as file:
+        base64_intents_json = base64.b64encode(file.read())
+        r.set(userId + ":model:intents.json", base64_intents_json)
+
+    with open(username + "/model.tflearn.data-00000-of-00001", "rb") as file:
+        base64_model_tflearn_data_00000_of_00001 = base64.b64encode(file.read())
+        r.set(userId + ":model:model.tflearn.data-00000-of-00001", base64_model_tflearn_data_00000_of_00001)
+
+    with open(username + "/model.tflearn.index", "rb") as file:
+        base64_model_tflearn_index = base64.b64encode(file.read())
+        r.set(userId + ":model:model.tflearn.index", base64_model_tflearn_index)
+
+    with open(username + "/model.tflearn.meta", "rb") as file:
+        base64_model_tflearn_meta = base64.b64encode(file.read())
+        r.set(userId + ":model:model.tflearn.meta", base64_model_tflearn_meta)
+
+
 
 def bag_of_words(s, words):
     bag = [0 for _ in range(len(words))]
@@ -165,10 +182,37 @@ def bag_of_words(s, words):
 
     return numpy.array(bag)
 
-def predict(text, username, intentIds):
-    folderPath = username
-    if (os.path.exists(username + "-tmp")):
-        folderPath += "-tmp"
+def predict(text, username, userId, intentIds):
+    folderPath = username + "-predict"
+
+    existThread = threadsDic.get(userId)
+    if (existThread == None):
+        r.set(userId + ":training_server_status", "free")
+
+    # load model từ redis về 
+    base64_checkpoint = r.get(userId + ":model:checkpoint")
+    base64_data_pickle = r.get(userId + ":model:data.pickle")
+    base64_intents_json = r.get(userId + ":model:intents.json")
+    base64_model_tflearn_data_00000_of_00001 = r.get(userId + ":model:model.tflearn.data-00000-of-00001")
+    base64_model_tflearn_index = r.get(userId + ":model:model.tflearn.index")
+    base64_model_tflearn_meta = r.get(userId + ":model:model.tflearn.meta")
+
+    # save file 
+    if not os.path.exists(folderPath):
+        os.makedirs(folderPath)
+    with open(folderPath + "/checkpoint", "wb") as fh:
+        fh.write(base64.decodebytes(base64_checkpoint))
+    with open(folderPath + "/data.pickle", "wb") as fh:
+        fh.write(base64.decodebytes(base64_data_pickle))
+    with open(folderPath + "/intents.json", "wb") as fh:
+        fh.write(base64.decodebytes(base64_intents_json))
+    with open(folderPath + "/model.tflearn.data-00000-of-00001", "wb") as fh:
+        fh.write(base64.decodebytes(base64_model_tflearn_data_00000_of_00001))
+    with open(folderPath + "/model.tflearn.index", "wb") as fh:
+        fh.write(base64.decodebytes(base64_model_tflearn_index))
+    with open(folderPath + "/model.tflearn.meta", "wb") as fh:
+        fh.write(base64.decodebytes(base64_model_tflearn_meta))
+
 
     # Load model
     with open(folderPath + "/data.pickle", "rb") as f:
