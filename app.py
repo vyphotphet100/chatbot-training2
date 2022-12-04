@@ -20,6 +20,7 @@ import base64
 
 # jServer = "http://localhost:8080"
 # jServer = "https://chatbot-vapt.herokuapp.com"
+# coding: utf-8
 
 app = Flask(__name__)
 CORS(app)
