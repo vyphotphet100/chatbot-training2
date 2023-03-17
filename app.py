@@ -299,4 +299,4 @@ def terminate_thread(thread):
         raise SystemError("PyThreadState_SetAsyncExc failed")
 
 if __name__ == "__main__":
-    app.run(threaded=True)
+    app.run(threaded=True, host="0.0.0.0", port=8081)
