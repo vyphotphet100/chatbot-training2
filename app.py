@@ -30,9 +30,9 @@ threadsDic = {
 
 # redis
 r = redis.Redis(
-host='redis-18384.c16.us-east-1-2.ec2.cloud.redislabs.com',
-port=18384,
-password='yPqm07QgkiXFbZ9gxR9ejjpmuhO3j9sG')
+host='redis-10810.c263.us-east-1-2.ec2.cloud.redislabs.com',
+port=10810,
+password='DP52KjeuwAhZyjKrpvP3kBlOurft4mHi')
 
 @app.route("/predict", methods=['POST'])
 def predictAPI():
