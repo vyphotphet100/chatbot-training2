@@ -92,18 +92,21 @@ def trainThread(payload):
 
         if intent["name"] not in labels:
             labels.append(intent["name"])
-    payload = None # Giải phóng bộ nhớ 
+    payload = None
 
     words = [stemmer.stem(w.lower()) for w in words if w != "?"]
     words = sorted(list(set(words)))
+
     labels = sorted(labels)
 
     training = []
     output = []
+
     out_empty = [0 for _ in range(len(labels))]
 
     for x, doc in enumerate(docs_x):
         bag = []
+
         wrds = [stemmer.stem(w.lower()) for w in doc]
 
         for w in words:
@@ -117,6 +120,7 @@ def trainThread(payload):
 
         training.append(bag)
         output.append(output_row)
+
 
     training = numpy.array(training)
     output = numpy.array(output)
@@ -140,7 +144,7 @@ def trainThread(payload):
     r.set(userId + ":training_server_status", "free")
     threadsDic[userId] = None
 
-    # set hết model lên redis
+    # set hết model lên redis -> Xóa folder {username}
     with open(username + "/checkpoint", "rb") as file:
         base64_checkpoint = base64.b64encode(file.read())
         r.set(userId + ":model:checkpoint", base64_checkpoint)
@@ -165,9 +169,6 @@ def trainThread(payload):
         base64_model_tflearn_meta = base64.b64encode(file.read())
         r.set(userId + ":model:model.tflearn.meta", base64_model_tflearn_meta)
 
-    if os.path.exists(username + "-predict"):
-        shutil.rmtree(username + "-predict")
-    os.rename(username, username + "-predict")
 
 
 def bag_of_words(s, words):
@@ -190,30 +191,29 @@ def predict(text, username, userId, intentIds):
     if (existThread == None):
         r.set(userId + ":training_server_status", "free")
 
-    if not os.path.exists(folderPath): 
-        # load model từ redis về 
-        base64_checkpoint = r.get(userId + ":model:checkpoint")
-        base64_data_pickle = r.get(userId + ":model:data.pickle")
-        base64_intents_json = r.get(userId + ":model:intents.json")
-        base64_model_tflearn_data_00000_of_00001 = r.get(userId + ":model:model.tflearn.data-00000-of-00001")
-        base64_model_tflearn_index = r.get(userId + ":model:model.tflearn.index")
-        base64_model_tflearn_meta = r.get(userId + ":model:model.tflearn.meta")
+    # load model từ redis về 
+    base64_checkpoint = r.get(userId + ":model:checkpoint")
+    base64_data_pickle = r.get(userId + ":model:data.pickle")
+    base64_intents_json = r.get(userId + ":model:intents.json")
+    base64_model_tflearn_data_00000_of_00001 = r.get(userId + ":model:model.tflearn.data-00000-of-00001")
+    base64_model_tflearn_index = r.get(userId + ":model:model.tflearn.index")
+    base64_model_tflearn_meta = r.get(userId + ":model:model.tflearn.meta")
 
-        # save file 
-        if not os.path.exists(folderPath):
-            os.makedirs(folderPath)
-        with open(folderPath + "/checkpoint", "wb") as fh:
-            fh.write(base64.decodebytes(base64_checkpoint))
-        with open(folderPath + "/data.pickle", "wb") as fh:
-            fh.write(base64.decodebytes(base64_data_pickle))
-        with open(folderPath + "/intents.json", "wb") as fh:
-            fh.write(base64.decodebytes(base64_intents_json))
-        with open(folderPath + "/model.tflearn.data-00000-of-00001", "wb") as fh:
-            fh.write(base64.decodebytes(base64_model_tflearn_data_00000_of_00001))
-        with open(folderPath + "/model.tflearn.index", "wb") as fh:
-            fh.write(base64.decodebytes(base64_model_tflearn_index))
-        with open(folderPath + "/model.tflearn.meta", "wb") as fh:
-            fh.write(base64.decodebytes(base64_model_tflearn_meta))
+    # save file 
+    if not os.path.exists(folderPath):
+        os.makedirs(folderPath)
+    with open(folderPath + "/checkpoint", "wb") as fh:
+        fh.write(base64.decodebytes(base64_checkpoint))
+    with open(folderPath + "/data.pickle", "wb") as fh:
+        fh.write(base64.decodebytes(base64_data_pickle))
+    with open(folderPath + "/intents.json", "wb") as fh:
+        fh.write(base64.decodebytes(base64_intents_json))
+    with open(folderPath + "/model.tflearn.data-00000-of-00001", "wb") as fh:
+        fh.write(base64.decodebytes(base64_model_tflearn_data_00000_of_00001))
+    with open(folderPath + "/model.tflearn.index", "wb") as fh:
+        fh.write(base64.decodebytes(base64_model_tflearn_index))
+    with open(folderPath + "/model.tflearn.meta", "wb") as fh:
+        fh.write(base64.decodebytes(base64_model_tflearn_meta))
 
 
     # Load model
@@ -282,7 +282,6 @@ def index():
 
 def terminate_thread(thread):
     """Terminates a python thread from another thread.
-
     :param thread: a threading.Thread instance
     """
     if not thread.is_alive():
@@ -300,4 +299,4 @@ def terminate_thread(thread):
         raise SystemError("PyThreadState_SetAsyncExc failed")
 
 if __name__ == "__main__":
-    app.run(threaded=True, host='0.0.0.0',port=8081)
+    app.run(threaded=True, host="0.0.0.0", port=5000)
