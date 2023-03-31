@@ -192,7 +192,7 @@ def train_ner(training_data):
                 examples.append(example)
             # Update the model
             nlp.update(examples, losses=losses, drop=0.3)
-        print(str(itn) + " Losses", losses)
+        print("Losses", losses)
         if (losses["ner"] < 3):
             break
     return nlp
@@ -237,8 +237,6 @@ def predict(text, username, userId, acceptIntentIds):
             if ((result[i] > maxAccuracy) and (result[i] > 0.3) and (intentIds[i] in acceptIntentIds)):
                 maxAccuracy = result[i]
                 resultIdx = i
-
-    # entities = predictEntityType(text, username, userId)
 
     if (resultIdx == -1):
         return {
