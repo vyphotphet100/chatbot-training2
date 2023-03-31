@@ -266,7 +266,8 @@ def predictEntityType(text, username, userId):
         nlp = pickle.load(f)
 
     resEntities = []
-    doc = nlp(text.lower())
+    text.lower()
+    doc = nlp(text)
     results = [(ent,ent.label_) for ent in doc.ents]
     for result in results:
         resEntities.append({
