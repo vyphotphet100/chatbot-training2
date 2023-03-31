@@ -12,13 +12,20 @@ import redis_service
 import base64
 import app
 import shutil
+import pandas as pd
+import spacy
+from wordcloud import WordCloud, STOPWORDS
+from spacy.util import minibatch, compounding
+import matplotlib.pyplot as plt
+import re
+import random
+from spacy.training.example import Example
 
 
 def train(payload):
     userId = payload["user_id"]
     username = payload["username"]
-    scriptId = payload["script_id"]
-    modelPath = username + "/" + scriptId
+    modelPath = username
 
     # Tạo folder lưu model nếu chưa có 
     if not os.path.exists(username):
@@ -26,110 +33,77 @@ def train(payload):
     if not os.path.exists(modelPath):
         os.makedirs(modelPath)
 
+    # Lưu payload vào file 
     with open(modelPath + "/intents.json", "w+") as outfile:
         outfile.write(json.dumps(payload, indent=4))
 
-    words = []
-    labels = []
-    docs_x = []
-    docs_y = []
-
+    words = [] # Chữ đã được tách của toàn bộ pattern
+    intentCodes = [] # Code của các intent (unique)
+    intentIds = [] # Id của các intent (unique)
+    docsX = [] # [ ["tôi", "tên", "là", "vỹ"] , ["tôi", "tên", "là", "linh"] , ...]
+    docsY = [] # Code intent của toàn bộ pattern (no-unique)
     for intent in payload["intents"]:
         for pattern in intent["patterns"]:
             wrds = nltk.word_tokenize(pattern["content"])
-            words.extend(wrds)
-            docs_x.append(wrds)
-            docs_y.append(intent["name"])
+            wrds = [stemmer.stem(w.lower()) for w in wrds]
+            words.extend([w for w in wrds if (w not in words)])
 
-        if intent["name"] not in labels:
-            labels.append(intent["name"])
-    payload = None
+            if ("entities" in pattern):
+                for entity in pattern["entities"]:
+                    wrds.append(entity["entity_type_id"])
+                    if (entity["entity_type_id"] not in words):
+                        words.append(entity["entity_type_id"])
 
-    words = [stemmer.stem(w.lower()) for w in words if w != "?"]
-    words = sorted(list(set(words)))
+            docsX.append(wrds)
+            docsY.append(intent["code"])
 
-    labels = sorted(labels)
+        if intent["code"] not in intentCodes:
+            intentCodes.append(intent["code"])
+        if intent["id"] not in intentIds:
+            intentIds.append(intent["id"])
 
+    # Convert doc_x và doc_y về training và output (Dạng 0,1,1,0,...)
     training = []
     output = []
-
-    out_empty = [0 for _ in range(len(labels))]
-
-    for x, doc in enumerate(docs_x):
+    out_empty = [0 for _ in range(len(intentCodes))]
+    for x, wrds in enumerate(docsX):
+        # Tạo training
         bag = []
-
-        wrds = [stemmer.stem(w.lower()) for w in doc]
-
         for w in words:
             if w in wrds:
                 bag.append(1)
             else:
                 bag.append(0)
-
-        output_row = out_empty[:]
-        output_row[labels.index(docs_y[x])] = 1
-
         training.append(bag)
-        output.append(output_row)
 
+        # Tạo output 
+        output_row = out_empty[:]
+        output_row[intentCodes.index(docsY[x])] = 1
+        output.append(output_row)
 
     training = numpy.array(training)
     output = numpy.array(output)
 
-    with open(modelPath + "/data.pickle", "wb") as f:
-        pickle.dump((words, labels, training, output), f)
+    with open(modelPath + "/intent_data.pickle", "wb") as f:
+        pickle.dump((words, intentIds, intentCodes, training, output), f)
 
     ops.reset_default_graph()
-
     net = tflearn.input_data(shape=[None, len(training[0])])
     net = tflearn.fully_connected(net, 8)
     net = tflearn.fully_connected(net, 8)
     net = tflearn.fully_connected(net, len(output[0]), activation="softmax")
     net = tflearn.regression(net)
-
     model = tflearn.DNN(net)
     model.fit(training, output, n_epoch=1000, batch_size=8, show_metric=True)
-    model.save(modelPath + "/model.tflearn")
+    model.save(modelPath + "/intent_model.tflearn")
+
+    # Train cho entity
+    trainForEntityType(payload)
 
     # Gui tin hieu train xong
     redis_service.set(userId + ":training_server_status", "free")
     app.threadsDic[userId] = None
-
-    # set hết model lên redis
-    redisKey = redis_service.USER_ID_PREFIX_ + userId + redis_service.COLON + redis_service.SCRIPT_ID_PREFIX_ + scriptId
-    with open(modelPath + "/checkpoint", "rb") as file:
-        base64_checkpoint = base64.b64encode(file.read())
-        redis_service.set(redisKey + ":model_file:checkpoint", base64_checkpoint)
-
-    with open(modelPath + "/data.pickle", "rb") as file:
-        base64_data_pickle = base64.b64encode(file.read())
-        redis_service.set(redisKey + ":model_file:data.pickle", base64_data_pickle)
-
-    with open(modelPath + "/intents.json", "rb") as file:
-        base64_intents_json = base64.b64encode(file.read())
-        redis_service.set(redisKey + ":model_file:intents.json", base64_intents_json)
-
-    with open(modelPath + "/model.tflearn.data-00000-of-00001", "rb") as file:
-        base64_model_tflearn_data_00000_of_00001 = base64.b64encode(file.read())
-        redis_service.set(redisKey + ":model_file:model.tflearn.data-00000-of-00001", base64_model_tflearn_data_00000_of_00001)
-
-    with open(modelPath + "/model.tflearn.index", "rb") as file:
-        base64_model_tflearn_index = base64.b64encode(file.read())
-        redis_service.set(redisKey + ":model_file:model.tflearn.index", base64_model_tflearn_index)
-
-    with open(modelPath + "/model.tflearn.meta", "rb") as file:
-        base64_model_tflearn_meta = base64.b64encode(file.read())
-        redis_service.set(redisKey + ":model_file:model.tflearn.meta", base64_model_tflearn_meta)
-
-    # Tăng version cho model 
-    modelVersion = redis_service.get(redisKey + ":model_file:version")
-    if (modelVersion == None or modelVersion == ""):
-        open(modelPath + "/version", "wt").write('1')
-        redis_service.set(redisKey + ":model_file:version", str("1"))
-    else:
-        modelVersion = int(modelVersion)
-        redis_service.set(redisKey + ":model_file:version", str(modelVersion + 1))
-        open(modelPath + "/version", "wt").write(str(modelVersion + 1))
+    print("TRAIN SUCCESSFULLY FOR USER: " + username)
 
     if (os.path.exists(modelPath + "-predict")):
         shutil.rmtree(modelPath + "-predict")
@@ -148,33 +122,100 @@ def bag_of_words(s, words):
 
     return numpy.array(bag)
 
-def predict(text, username, userId, intentIds, scriptId):
-    folderPath = username + "/" + scriptId + "-predict"
-    redisKey = redis_service.USER_ID_PREFIX_ + userId + redis_service.COLON + redis_service.SCRIPT_ID_PREFIX_ + scriptId
+def trainForEntityType(payload):
+    username = payload["username"]
+    modelPath = username
+    # NER
+    spacy.load('en_core_web_sm')
+    TRAIN_DATA = []
+    for intent in payload["intents"]:
+        for pattern in intent["patterns"]:
+            ent_dict = {}
+            content = pattern["content"].lower()
+            entities = []
+            if ("entities" not in pattern):
+                continue
+
+            for entity in pattern["entities"]:
+                entityToTrain = (int(entity["start_position"]), int(entity["end_position"]) + 1, entity["entity_type"]["id"])
+                entities.append(entityToTrain)
+            if len(entities) > 0:
+                ent_dict['entities'] = entities
+                train_item = (content, ent_dict)
+                TRAIN_DATA.append(train_item)
+    
+    # Let training
+    nlp = train_ner(TRAIN_DATA)
+
+    # Tạo folder lưu model nếu chưa có 
+    if not os.path.exists(modelPath):
+        os.makedirs(modelPath)
+    if not os.path.exists(modelPath):
+        os.makedirs(modelPath)
+    with open(modelPath + "/entity_nlp.pickle", "wb") as f:
+        pickle.dump((nlp), f)
+
+"""### Training the NER Model"""
+def train_ner(training_data):
+    """Steps
+    Create a Blank NLP  model object
+    Create and add NER to the NLP model
+    Add Labels from your training data
+    Train  
+    """
+    n_iter = 50
+    TRAIN_DATA = training_data
+    nlp = spacy.blank("en")  # create blank Language class
+    
+    if "ner" not in nlp.pipe_names:
+        nlp.add_pipe("ner", last=True)
+    ner = nlp.get_pipe("ner")
+        
+    # add labels
+    for _, annotations in TRAIN_DATA:
+        for ent in annotations.get("entities"):
+            ner.add_label(ent[2])
+            
+    nlp.begin_training()
+    for itn in range(n_iter):
+        random.shuffle(TRAIN_DATA)
+        losses = {}
+        # batch up the examples using spaCy's minibatch
+        # batches = minibatch(TRAIN_DATA, size=compounding(1, len(TRAIN_DATA), 1.001))
+        batches = minibatch(TRAIN_DATA, size=8)
+        for batch in batches:
+            texts, annotations = zip(*batch)
+            examples = []
+            for i in range(0, len(texts)):
+                doc = nlp.make_doc(texts[i])
+                example = Example.from_dict(doc, annotations[i])
+                examples.append(example)
+            # Update the model
+            nlp.update(examples, losses=losses, drop=0.3)
+        print(str(itn) + " Losses", losses)
+        if (losses["ner"] < 3):
+            break
+    return nlp
+
+def predict(text, username, userId, acceptIntentIds):
+    folderPath = username + "-predict"
 
     # Kiểm tra xem có training thread của user này có đang chạy hay không 
     existThread = app.threadsDic.get(userId)
     if (existThread == None):
         redis_service.set(userId + ":training_server_status", "free")
-
-    # load model mới từ redis về  nếu nó đã được train mới (version tăng)
-    modelVersion = redis_service.get(redisKey + ":model_file:version")
-    if (modelVersion == None or modelVersion == ""): # model này chưa được train 
-        return None
-
-    if not os.path.exists(folderPath):
-        os.makedirs(folderPath)
-        saveModelFromRedis(redisKey, folderPath)
-    else:
-        modelVersionInFile = None
-        with open(folderPath + "/version", "rt") as file:
-            modelVersionInFile = file.readline()
-        if (int(modelVersionInFile) != int(modelVersion)):
-            saveModelFromRedis(redisKey, folderPath)
     
+    if not os.path.exists(folderPath):
+        return None # model này chưa được train 
+
     # Load model
-    with open(folderPath + "/data.pickle", "rb") as f:
-        words, labels, training, output = pickle.load(f)
+    with open(folderPath + "/intent_data.pickle", "rb") as f:
+        words, intentIds, intentCodes, training, output = pickle.load(f)
+
+    entities = predictEntityType(text, username, userId)
+    if (entities != []):
+        for entity in entities:
+            text = text + " " + entity["entityTypeId"]
 
     ops.reset_default_graph()
     net = tflearn.input_data(shape=[None, len(training[0])])
@@ -184,79 +225,57 @@ def predict(text, username, userId, intentIds, scriptId):
     net = tflearn.regression(net)
 
     model = tflearn.DNN(net)
-    model.load(folderPath + "/model.tflearn")
+    model.load(folderPath + "/intent_model.tflearn")
 
-    # Load words và labels
-    words = []
-    labels = []
-
-    data = None
-    with open(folderPath + "/intents.json") as file:
-        data = json.load(file)
-
-    for intent in data["intents"]:
-        for pattern in intent["patterns"]:
-            wrds = nltk.word_tokenize(pattern["content"])
-            words.extend(wrds)
-
-        if intent["name"] not in labels:
-            labels.append(intent["name"] + "|" + intent["id"])
-
-    words = [stemmer.stem(w.lower()) for w in words if w != "?"]
-    words = sorted(list(set(words)))
-    labels = sorted(labels)
-
-    # predict
+    # predict intent 
     results = model.predict([bag_of_words(text, words)])
     results_index = numpy.argmax(results)
     maxAccuracy = 0
     resultIdx = -1
     for result in results:
         for i in range(0, len(result)):
-            tagWithId = labels[i]
-            tag = tagWithId.split("|")[0]
-            intentId = tagWithId.split("|")[1]
-            
-            if (intentId not in intentIds):
-                continue
-
-            if (result[i] > maxAccuracy and result[i] > 0.5):
+            if ((result[i] > maxAccuracy) and (result[i] > 0.3) and (intentIds[i] in acceptIntentIds)):
                 maxAccuracy = result[i]
                 resultIdx = i
 
+    # entities = predictEntityType(text, username, userId)
 
     if (resultIdx == -1):
-        return [None, None, 0]
+        return {
+            "intentId": "-1",
+            "intentCode": "-1",
+            "acurracy": "-1",
+            "entities": entities
+        }
 
-    tagWithId = labels[resultIdx]
-    tag = tagWithId.split("|")[0]
-    intentId = tagWithId.split("|")[1]
-    return [intentId, tag, results[0][results_index]]
+    intentId = intentIds[resultIdx]
+    intentCode = intentCodes[resultIdx]
+    return {
+        "intentId": intentId,
+        "intentCode": intentCode,
+        "acurracy": str(results[0][resultIdx]),
+        "entities": entities
+    }
 
-def saveModelFromRedis(redisKey, folderPath):
-    base64_checkpoint = redis_service.get(redisKey + ":model_file:checkpoint")
-    base64_data_pickle = redis_service.get(redisKey + ":model_file:data.pickle")
-    base64_intents_json = redis_service.get(redisKey + ":model_file:intents.json")
-    base64_model_tflearn_data_00000_of_00001 = redis_service.get(redisKey + ":model_file:model.tflearn.data-00000-of-00001")
-    base64_model_tflearn_index = redis_service.get(redisKey + ":model_file:model.tflearn.index")
-    base64_model_tflearn_meta = redis_service.get(redisKey + ":model_file:model.tflearn.meta")
-    modelVersion = int(redis_service.get(redisKey + ":model_file:version"))
+def predictEntityType(text, username, userId):
+    folderPath = username + "-predict"
 
-    # save file 
     if not os.path.exists(folderPath):
-        os.makedirs(folderPath)
-    with open(folderPath + "/checkpoint", "wb") as fh:
-        fh.write(base64.decodebytes(base64_checkpoint))
-    with open(folderPath + "/data.pickle", "wb") as fh:
-        fh.write(base64.decodebytes(base64_data_pickle))
-    with open(folderPath + "/intents.json", "wb") as fh:
-        fh.write(base64.decodebytes(base64_intents_json))
-    with open(folderPath + "/model.tflearn.data-00000-of-00001", "wb") as fh:
-        fh.write(base64.decodebytes(base64_model_tflearn_data_00000_of_00001))
-    with open(folderPath + "/model.tflearn.index", "wb") as fh:
-        fh.write(base64.decodebytes(base64_model_tflearn_index))
-    with open(folderPath + "/model.tflearn.meta", "wb") as fh:
-        fh.write(base64.decodebytes(base64_model_tflearn_meta))
-    open(folderPath + "/version", "wt").write(str(modelVersion))
+        return []
 
+    nlp = None
+    with open(folderPath + "/entity_nlp.pickle", "rb") as f:
+        nlp = pickle.load(f)
+
+    resEntities = []
+    doc = nlp(text)
+    results = [(ent,ent.label_) for ent in doc.ents]
+    for result in results:
+        resEntities.append({
+            "value": str(result[0]),
+            "entityTypeId": str(result[1]),
+            "startPosition": text.index(str(result[0])),
+            "endPosition": text.index(str(result[0])) + len(str(result[0])) - 1
+        })
+    return resEntities
 

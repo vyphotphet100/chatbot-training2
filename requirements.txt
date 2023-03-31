@@ -7,8 +7,10 @@ MarkupSafe==2.1.1
 Werkzeug==2.2.2
 numpy
 nltk
-numpy
 tflearn
 tensorflow
 flask_cors
 redis
+pandas
+spacy
+wordcloud

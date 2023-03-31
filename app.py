@@ -27,20 +27,8 @@ def predictAPI():
     username = payload["username"]
     userId = payload["user_id"]
     intentIds = payload["intent_ids"]
-    scriptId = payload["script_id"]
-    intent_result = train_service.predict(text, username, userId, intentIds, scriptId)
-    if (intent_result == None):
-        return jsonify({
-            "intentId": "-1",
-            "intentName": "-1",
-            "accuracy": "-1"
-        })
-
-    return jsonify({
-        "intentId": intent_result[0],
-        "intentName": intent_result[1],
-        "accuracy": str(intent_result[2])
-    })
+    
+    return jsonify(train_service.predict(text, username, userId, intentIds))
 
 @app.route("/train", methods=['POST'])
 def trainAPI():
