@@ -145,15 +145,15 @@ def trainForEntityType(payload):
                 TRAIN_DATA.append(train_item)
     
     # Let training
-    nlp = train_ner(TRAIN_DATA)
-
-    # Tạo folder lưu model nếu chưa có 
-    if not os.path.exists(modelPath):
-        os.makedirs(modelPath)
-    if not os.path.exists(modelPath):
-        os.makedirs(modelPath)
-    with open(modelPath + "/entity_nlp.pickle", "wb") as f:
-        pickle.dump((nlp), f)
+    if (len(TRAIN_DATA) != 0): 
+        nlp = train_ner(TRAIN_DATA)
+        # Tạo folder lưu model nếu chưa có 
+        if not os.path.exists(modelPath):
+            os.makedirs(modelPath)
+        if not os.path.exists(modelPath):
+            os.makedirs(modelPath)
+        with open(modelPath + "/entity_nlp.pickle", "wb") as f:
+            pickle.dump((nlp), f)
 
 """### Training the NER Model"""
 def train_ner(training_data):
@@ -258,7 +258,7 @@ def predict(text, username, userId, acceptIntentIds):
 def predictEntityType(text, username, userId):
     folderPath = username + "-predict"
 
-    if not os.path.exists(folderPath):
+    if not os.path.exists(folderPath) or not os.path.exists(folderPath + "/entity_nlp.pickle"):
         return []
 
     nlp = None
