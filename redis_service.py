@@ -2,9 +2,8 @@ import redis
 
 # redis
 r = redis.Redis(
-host='redis-10810.c263.us-east-1-2.ec2.cloud.redislabs.com',
-port=10810,
-password='DP52KjeuwAhZyjKrpvP3kBlOurft4mHi')
+host='localhost',
+port=6380)
 
 #Prefix
 USER_ID_PREFIX_ = "userIdPrefix_"

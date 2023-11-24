@@ -234,7 +234,8 @@ def predict(text, username, userId, acceptIntentIds):
     resultIdx = -1
     for result in results:
         for i in range(0, len(result)):
-            if ((result[i] > maxAccuracy) and (result[i] > 0.3) and (intentIds[i] in acceptIntentIds)):
+            # if ((result[i] > maxAccuracy) and (result[i] > 0.3) and (intentIds[i] in acceptIntentIds)):
+            if ((result[i] > maxAccuracy) and (intentIds[i] in acceptIntentIds)):
                 maxAccuracy = result[i]
                 resultIdx = i
 
@@ -248,6 +249,12 @@ def predict(text, username, userId, acceptIntentIds):
 
     intentId = intentIds[resultIdx]
     intentCode = intentCodes[resultIdx]
+    print({
+        "intentId": intentId,
+        "intentCode": intentCode,
+        "acurracy": str(results[0][resultIdx]),
+        "entities": entities
+    })
     return {
         "intentId": intentId,
         "intentCode": intentCode,

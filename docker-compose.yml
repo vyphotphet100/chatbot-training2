@@ -1,0 +1,8 @@
+version: '3'
+services:
+  python-app:
+    build:
+      context: .  # Build context is the current directory
+      dockerfile: Dockerfile  # Use the provided Dockerfile
+    ports:
+      - "5000:5000"  # Map port 80 in the container to port 8080 on the host
