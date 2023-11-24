@@ -43,6 +43,8 @@ def train(payload):
     docsX = [] # [ ["tôi", "tên", "là", "vỹ"] , ["tôi", "tên", "là", "linh"] , ...]
     docsY = [] # Code intent của toàn bộ pattern (no-unique)
     for intent in payload["intents"]:
+        if ('patterns' not in intent):
+            continue
         for pattern in intent["patterns"]:
             wrds = nltk.word_tokenize(pattern["content"])
             wrds = [stemmer.stem(w.lower()) for w in wrds]
@@ -129,6 +131,8 @@ def trainForEntityType(payload):
     spacy.load('en_core_web_sm')
     TRAIN_DATA = []
     for intent in payload["intents"]:
+        if ('patterns' not in intent):
+            continue
         for pattern in intent["patterns"]:
             ent_dict = {}
             content = pattern["content"].lower()
